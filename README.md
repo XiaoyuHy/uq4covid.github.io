@@ -59,8 +59,7 @@ The `data/` and `inputs/` folders contain the raw data files, and some scripts f
 
 The raw data consist of:
 
-* Deaths reported within 28 days of a positive test by age and region: `data/nation_2021-05-10.csv`, downloaded from
-[https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv&release=2021-05-10]("https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv&release=2021-05-10) [link defunct]. As the record begins on 2nd March 2020, we assume that deaths from COVID-19 are zero between 15th January–2nd March.
+* Deaths reported within 28 days of a positive test by age and region: `data/nation_2021-05-10.csv`, downloaded from [https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv&release=2021-05-10](https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv&release=2021-05-10) [link defunct]. As the record begins on 2nd March 2020, we assume that deaths from COVID-19 are zero between 15th January–2nd March.
 
 Change the working directory of R to `data` and run:
 
