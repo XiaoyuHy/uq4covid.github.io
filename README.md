@@ -10,8 +10,8 @@ All simulator model runs were conducted on a MacBook Pro with an M1 Pro chip and
 
 The repository contains the following folders:
 
-* `perfect_model_experiments/DeathOnly/`: folder containing code for **Section 4.2.1 - Assimilating death counts only**.
-* `perfect_model_experiments/Death_HospitalCases/`: folder containing code for **Section 4.2.1 - Assimilating death counts and hospital cases**.
+* `Perfect_model_experiments/DeathOnly/`: folder containing code for **Section 4.2.1 - Assimilating death counts only**.
+* `Perfect_model_experiments/Death_HospitalCases/`: folder containing code for **Section 4.2.1 - Assimilating death counts and hospital cases**.
 * `Application/`: folder containing code for **Section 5 - Application: UK COVID-19 lockdown, March 2020**.
 
 A brief description of the files in each folder is provided below, with further details in later sections.
@@ -21,8 +21,7 @@ A brief description of the files in each folder is provided below, with further 
 models.
 * `BPF.R`: R functions to run the particle filters. Arguments to the main `BPF` function
 are defined at the top of the file.
-* `BPF_foreCasts.R`: R functions to run the particle filters. Arguments to the main `BPF` function
-are defined at the top of the file. It differs slightly from `BPF.R` in that it adds sampled observation error to the trajectories. 
+* `BPF_foreCasts.R`:  R functions to run the particle filters. This variant differs from `BPF.R` by preserving all particle trajectories (`saveAll = TRUE`) and incorporating sampled observation error into these trajectories to facilitate comparison with observed data.
 * `stochModel.R`: Code to simulate data. This file is only used for the perfect model experiments.
 * `checkWavexDesign.R`: code to check the design points at each new wave and convert the 
  design into the correct format for use in the model.
@@ -31,8 +30,8 @@ are defined at the top of the file. It differs slightly from `BPF.R` in that it 
 * `tnorm.cpp`: C++ implementation for fast truncated Gaussian sampling that can be called from R.
 * `bessel.h`: C header file that defines constants and parameters for calculating Bessel functions in the R programming language.
 * `wave1Design.R`: code to generate a Wave 1 design across the input space.
-* `wavexForecasts.R`: code to produce forecasts at any given wave.
-* `wavexRuns.R`: code to run the model at a given design point.
+* `ensembleForecasts.R`: code to generate ensemble forecasts for any specified wave.
+* `wavexRuns.R`: code to run the model across multiple design points for a specified wave.
 * `emulateDGP_wave1.R`: implementation of history matching (HM) with the Deep Gaussian Process (DGP) emulator configured for Wave 1 design points.
 * `emulateDGP_wavex.R`: implementation of HM with the DGP emulator configured for arbitrary Wave x design points, enabling multi-wave analysis.
 * `emulator_fns.R`: custom functions supporting the HM framework with a DGP emulator.
@@ -59,7 +58,8 @@ The `data/` and `inputs/` folders contain the raw data files, and some scripts f
 
 The raw data consist of:
 
-* Deaths reported within 28 days of a positive test by age and region: `data/nation_2021-05-10.csv`, downloaded from [https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv&release=2021-05-10](https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv&release=2021-05-10) [link defunct]. As the record begins on 2nd March 2020, we assume that deaths from COVID-19 are zero between 15th January–2nd March.
+* Deaths reported within 28 days of a positive test by age and region: `data/nation_2021-05-10.csv`, downloaded from
+[https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv&release=2021-05-10](https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv&release=2021-05-10) [link defunct]. As the record begins on 2nd March 2020, we assume that deaths from COVID-19 are zero between 15th January–2nd March.
 
 Change the working directory of R to `data` and run:
 
@@ -68,7 +68,7 @@ source("dataProcess.R")
 ```
 This will generate the file 'deathTotalByAge.rds'.
 
-**Note**: daily hospitalisation data from January 15th to March 23rd, 2020 is not publicly available and was originally obtained from the COVID-19 Hospitalisation in England Surveillance System (CHESS). For demonstration purposes in this repository, I have generated random numbers to represent this period, saved as `'data/hospitalCasesTotal_Eng_forDemo.rds'`. Both this file and the `'deathTotalByAge.rds' file` are used in the `'wavexRuns.R'` and `'ensembleForecasts.R'` scripts in the `'Application'` folder to assimilate death counts and hospital cases data up to the first lockdown period.
+**Note**: daily hospitalisation data from January 15th to March 23rd, 2020 is not publicly available and was originally obtained from the COVID-19 Hospitalisation in England Surveillance System (CHESS). For demonstration purposes in this repository, we have generated random numbers to represent this period, saved as `'data/hospitalCasesTotal_Eng_forDemo.rds'`. Both this file and the `'deathTotalByAge.rds' file` are used in the `'wavexRuns.R'` and `'ensembleForecasts.R'` scripts in the `'Application'` folder to assimilate death counts and hospital cases data up to the first lockdown period.
 
 
 ## Other data files, scripts and objects necessary for sampling from the input spaces
@@ -119,7 +119,7 @@ The code used to simulate a synthetic data set from the underlying model can be 
 
 To generate simulated data, first run the `wave1Design.R`  file to create a Wave 1 Latin Hypercube Sampling (LHS) design. Then execute `stochModel.R`  to simulate data using one of these design points. On line 31, you can specify which parameter set to use for simulation. In the example, we use the tenth set (`10`) as the 'true' parameters and simulate a 90-day period. The script automatically creates an output folder named `data`, containing the simulated results. 
 
-Change the working directory of R to `perfect_model_experiments/DeathOnly` and run:
+Change the working directory of R to `Perfect_model_experiments/DeathOnly` and run:
 
 ```
 source("stochModel.R")
@@ -132,11 +132,11 @@ The contents of the output folder "data" contains files:
 * `pars.rds`: a `tibble` object containing the parameters used to simulate the data.
 * `sims.pdf`: a plot of the simulated data and  the hidden states.
 
-Copy the generated 'data' folder to `perfect_model_experiments/Death_HospitalCases` to assimilate death counts and hospital cases for the perfect model experiment.
+Copy the generated 'data' folder to `Perfect_model_experiments/Death_HospitalCases` to assimilate death counts and hospital cases for the perfect model experiment.
 
 ## Running the model
 
-The `wavexRuns.R` file contains code for running a single design point. It takes one argument: the "wave" folder where both design points and data are stored. For example, to run the first design point of the wave 1 design (stored in the `wave1` folder), using the data (log-likelihood estimates stored in files named `runs_md.rds`) also located in the `wave1` folder, we can execute:
+The `wavexRuns.R` file contains code for running an ensemble of design points for a given wave. It takes one argument: the "wave" folder where both design points and data are stored. For example, to run the first design point of the wave 1 design (stored in the `wave1` folder), using the data (log-likelihood estimates stored in files named `runs_md.rds`) also located in the `wave1` folder, we can execute:
 
 
 ```
