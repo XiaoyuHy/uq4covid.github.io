@@ -42,7 +42,7 @@ num_particles=500
 ## read in real data 
 dataD <- readRDS("deathTotalByAge.rds")
 # total hosptialisation cases
-dataH <- readRDS("hospitalIncsTotal_Eng_forDemo.rds")
+dataH <- readRDS("hospitalCasesTotal_Eng_forDemo.rds")
 dataH <- select(dataH, -date)
 
 #Cumulative deaths observations
