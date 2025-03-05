@@ -10,8 +10,8 @@ All simulator model runs were conducted on a MacBook Pro with an M1 Pro chip and
 
 The repository contains the following folders:
 
-* `Perfect_model_experiments/DeathOnly/`: folder containing code for **Section 4.2.1 - Assimilating death counts only**.
-* `Perfect_model_experiments/Death_HospitalCases/`: folder containing code for **Section 4.2.1 - Assimilating death counts and hospital cases**.
+* `perfect_model_experiments/DeathOnly/`: folder containing code for **Section 4.2.1 - Assimilating death counts only**.
+* `perfect_model_experiments/Death_HospitalCases/`: folder containing code for **Section 4.2.1 - Assimilating death counts and hospital cases**.
 * `Application/`: folder containing code for **Section 5 - Application: UK COVID-19 lockdown, March 2020**.
 
 A brief description of the files in each folder is provided below, with further details in later sections.
@@ -119,7 +119,7 @@ The code used to simulate a synthetic data set from the underlying model can be 
 
 To generate simulated data, first run the `wave1Design.R`  file to create a Wave 1 Latin Hypercube Sampling (LHS) design. Then execute `stochModel.R`  to simulate data using one of these design points. On line 31, you can specify which parameter set to use for simulation. In the example, we use the tenth set (`10`) as the 'true' parameters and simulate a 90-day period. The script automatically creates an output folder named `data`, containing the simulated results. 
 
-Change the working directory of R to `Perfect_model_experiments/DeathOnly` and run:
+Change the working directory of R to `perfect_model_experiments/DeathOnly` and run:
 
 ```
 source("stochModel.R")
@@ -132,7 +132,7 @@ The contents of the output folder "data" contains files:
 * `pars.rds`: a `tibble` object containing the parameters used to simulate the data.
 * `sims.pdf`: a plot of the simulated data and  the hidden states.
 
-Copy the generated 'data' folder to `Perfect_model_experiments/Death_HospitalCases` to assimilate death counts and hospital cases for the perfect model experiment.
+Copy the generated 'data' folder to `perfect_model_experiments/Death_HospitalCases` to assimilate death counts and hospital cases for the perfect model experiment.
 
 ## Running the model
 
