@@ -1,4 +1,4 @@
-This repository contains the code and data used in [Williamson *et al.* (2025)]():
+This repository contains the code and data used in  in [Williamson, McKinley, Xiong et al. (2026)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1014868):
 
 "On real-time calibrated prediction for complex model-based decision support in pandemics: Part I"
 
